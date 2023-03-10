@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
+const { mlog } = require('./middleware/mlog');
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+app.use(mlog);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
