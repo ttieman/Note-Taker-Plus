@@ -1,20 +1,20 @@
-const express = require('express');
+const express = require('express');  // imports
 const path = require('path');
 const { mlog } = require('./middleware/mlog');
 const api = require('./routes/index.js');
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001;  // port
 
-const app = express();
+const app = express(); // assigns express to a variable
+ 
+app.use(mlog);  // uses middleware
 
-app.use(mlog);
-
-app.use(express.json());
+app.use(express.json());  // uses json 
 app.use(express.urlencoded({extended: true}));
 
-app.use('/',api);
+app.use('/',api); //router ware
 
-app.use(express.static("public"));
+app.use(express.static("public")); // static server
 
 //GET Route home page
 app.get('/', (req,res) => 
@@ -26,7 +26,7 @@ app.get('/notes', (req, res) =>
  res.sendFile(path.join(__dirname, './public/notes.html'))
 );
 
-app.get('*', (req,res) => 
+app.get('*', (req,res) =>  // break response 
     res.sendFile(path.join(__dirname, 'public/index.html'))
 );
 

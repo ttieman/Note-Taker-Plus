@@ -1,6 +1,5 @@
-const dataBase = require('express').Router();
+const dataBase = require('express').Router();  // sets api routers
 const { readAndAppend, readFromFile, writeToFile } = require('../helpers/fsUtils');
-const uuid = require('uuid');
 //GET route retrieving the data stored in database
 dataBase.get('/', (req, res) => {
     readFromFile('./db/db.json').then((data) =>
@@ -10,34 +9,34 @@ dataBase.get('/', (req, res) => {
 
 //POST route for submitting new notes
 dataBase.post('/notes', (req, res) => {
-    console.log(req.body);
-    const id = `${Math.floor(Math.random() * 90 + 10)}`;
+    console.log(req.body); 
+    const id = `${Math.floor(Math.random() * 90 + 10)}`; //random id generator 
     const { title, text, } = req.body;
 
     if (req.body) {
-        const newNote = {
+        const newNote = {  //structures the new note posted to db file
             id,
             title,
             text,
         };
 
-        readAndAppend(newNote, './db/db.json');
+        readAndAppend(newNote, './db/db.json');  // reads and saves new notes
 
-        const response = {
+        const response = {   //success response 
             status: 'success',
             body: newNote,
         };
-        console.info(response);
+        console.info(response);  // logs the response 
         res.json(response);
     }else {
         res.error('Error in posting note');
     }
 });
 
-dataBase.delete('/notes/:id', (req, res) => {
-    const noteTitle = req.params.id;
+dataBase.delete('/notes/:id', (req, res) => {  // handles delete requests and takes the paramater of id 
+    const noteTitle = req.params.id;  // selects the notes id 
     readFromFile('./db/db.json')
-    .then((data) => JSON.parse(data))
+    .then((data) => JSON.parse(data))  
     .then((json) => {
         const result = json.filter((note) => note.id !== noteTitle);
 
@@ -50,4 +49,4 @@ dataBase.delete('/notes/:id', (req, res) => {
 
 
 
-module.exports = dataBase;
+module.exports = dataBase; 
